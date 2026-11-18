@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<rect width="512" height="512" rx="90" fill="#10243a"/>
+  <rect x="65" y="65" width="382" height="382" rx="65" fill="#183c58"/>
+<path d="M115 330 L190 255 L245 295 L365 165" fill="none" stroke="#54d6ad" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M305 165 H365 V225" fill="none" stroke="#54d6ad" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="256" y="405" font-family="Arial,sans-serif" font-size="62" font-weight="bold" fill="#ffffff" text-anchor="middle">CFK</text>
+</svg>
