@@ -1,0 +1,1165 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#10243a">
+<title>Cash Flow & Late Payment Control Kit</title>
+
+<style>
+:root {
+  --navy:#10243a;
+  --blue:#1769aa;
+  --light:#f3f6fa;
+  --white:#ffffff;
+  --text:#243447;
+  --muted:#6b7b8c;
+  --green:#16845b;
+  --red:#c43d4d;
+  --border:#dce4ec;
+  --gold:#e8a52a;
+  --shadow:0 4px 18px rgba(16,36,58,.07);
+}
+* { box-sizing:border-box; }
+body {
+  margin:0;
+  background:var(--light);
+  color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:15px;
+  line-height:1.5;
+}
+header {
+  background:var(--navy);
+  color:white;
+  padding:22px 18px;
+}
+.header-inner, main {
+  max-width:1100px;
+  margin:auto;
+}
+.brand {
+  font-size:12px;
+  color:#b9cde0;
+  letter-spacing:.5px;
+  margin-bottom:5px;
+}
+h1 { font-size:25px; margin:0 0 5px; }
+header p { margin:0; color:#d3dfeb; font-size:14px; }
+main { padding:18px 14px 40px; }
+.toolbar {
+  display:flex;
+  flex-wrap:wrap;
+  gap:9px;
+  align-items:center;
+  margin-bottom:12px;
+}
+button, select, input, textarea {
+  font:inherit;
+}
+button {
+  border:0;
+  border-radius:8px;
+  padding:10px 14px;
+  background:var(--blue);
+  color:white;
+  font-weight:700;
+  cursor:pointer;
+}
+button:active { transform:translateY(1px); }
+button.secondary {
+  background:#e8eef5;
+  color:var(--navy);
+}
+button.danger { background:var(--red); }
+button.green { background:var(--green); }
+button.small {
+  padding:7px 10px;
+  font-size:12px;
+}
+select, input, textarea {
+  width:100%;
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:10px;
+  background:white;
+  color:var(--text);
+  min-width:0;
+}
+input[type="number"] { text-align:left; }
+label {
+  display:block;
+  font-size:13px;
+  font-weight:700;
+  margin-bottom:5px;
+}
+.field { margin-bottom:12px; min-width:0; }
+.help { color:var(--muted); font-size:12px; margin-top:4px; }
+.storage-status {
+  background:#e8f2fb;
+  color:#245477;
+  padding:9px 12px;
+  border-radius:8px;
+  font-size:12px;
+  margin-bottom:16px;
+}
+.tabs {
+  display:flex;
+  gap:7px;
+  overflow-x:auto;
+  padding:3px 0 12px;
+  margin-bottom:5px;
+}
+.tab {
+  flex:0 0 auto;
+  background:#e5ebf2;
+  color:var(--navy);
+  padding:10px 13px;
+}
+.tab.active { background:var(--navy); color:white; }
+section { margin-bottom:18px; }
+.hidden { display:none !important; }
+.card {
+  background:white;
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:16px;
+  box-shadow:var(--shadow);
+  margin-bottom:14px;
+}
+h2 { font-size:19px; margin:0 0 13px; color:var(--navy); }
+h3 { font-size:16px; margin:0 0 10px; color:var(--navy); }
+p { margin:7px 0; }
+.grid {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+}
+.stats {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+  margin-bottom:14px;
+}
+.stat {
+  background:white;
+  border:1px solid var(--border);
+  border-radius:11px;
+  padding:13px;
+  box-shadow:var(--shadow);
+  min-width:0;
+}
+.stat .name { color:var(--muted); font-size:12px; }
+.stat .value {
+  font-size:20px;
+  font-weight:800;
+  color:var(--navy);
+  overflow-wrap:anywhere;
+  margin-top:4px;
+}
+.table-wrap { overflow-x:auto; width:100%; }
+table {
+  width:100%;
+  border-collapse:collapse;
+  min-width:620px;
+  font-size:13px;
+}
+th,td {
+  text-align:left;
+  padding:10px 9px;
+  border-bottom:1px solid var(--border);
+  vertical-align:middle;
+}
+th { background:#f1f5f9; color:var(--navy); }
+td input { min-width:85px; padding:7px; }
+.pill {
+  display:inline-block;
+  border-radius:30px;
+  background:#edf1f5;
+  padding:4px 8px;
+  font-size:11px;
+  font-weight:700;
+}
+.pill.paid { background:#e1f4eb; color:#13734d; }
+.pill.overdue { background:#fde8e9; color:#a82b39; }
+.actions { display:flex; gap:5px; flex-wrap:wrap; }
+.notice {
+  padding:12px;
+  border-radius:9px;
+  background:#fff5df;
+  border:1px solid #f0dfb9;
+  margin:10px 0;
+  font-size:13px;
+}
+.script {
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:13px;
+  margin:12px 0;
+  background:#fbfcfe;
+}
+.script textarea {
+  min-height:125px;
+  resize:vertical;
+  margin:8px 0;
+  font-size:13px;
+}
+.muted { color:var(--muted); }
+.footer {
+  text-align:center;
+  color:var(--muted);
+  font-size:12px;
+  padding:18px 5px;
+}
+hr { border:0; border-top:1px solid var(--border); margin:16px 0; }
+@media(min-width:700px) {
+  .stats { grid-template-columns:repeat(4,minmax(0,1fr)); }
+  .grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  h1 { font-size:29px; }
+}
+@media(max-width:420px) {
+  h1 { font-size:21px; }
+  main { padding:13px 10px 30px; }
+  .card { padding:12px; }
+  button { padding:10px 11px; }
+}
+@media print {
+  body { background:white; }
+  header { background:white; color:black; padding:10px 0; }
+  header p,.brand { color:#444; }
+  .toolbar,.tabs,button,.no-print { display:none !important; }
+  main { padding:0; }
+  .card,.stat { box-shadow:none; break-inside:avoid; }
+  section.hidden { display:none !important; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="brand">JeanDev Studios · Practical Business Tools</div>
+    <h1>Cash Flow & Late Payment Control Kit</h1>
+    <p>A simple workspace to track money, invoices and the next 13 weeks.</p>
+  </div>
+</header>
+
+<main>
+
+<div class="toolbar no-print">
+  <div style="min-width:110px;flex:1">
+    <label for="currency">Currency</label>
+    <select id="currency">
+      <option value="ZAR">South African Rand (ZAR)</option>
+      <option value="USD">US Dollar (USD)</option>
+      <option value="EUR">Euro (EUR)</option>
+    </select>
+  </div>
+  <button id="exportCsv" class="secondary">Export CSV</button>
+  <button id="backupJson" class="green">Full backup</button>
+  <button id="restoreButton" class="secondary">Restore backup</button>
+  <button id="printButton" class="secondary">Print report</button>
+  <input id="restoreFile" type="file" accept=".json,.csv,application/json,text/csv" hidden>
+</div>
+
+<div id="storageStatus" class="storage-status">
+  Your information is stored in this browser on this device. Export a backup regularly.
+</div>
+
+<nav class="tabs no-print">
+  <button class="tab active" data-tab="overview">Overview</button>
+  <button class="tab" data-tab="invoices">Invoices</button>
+  <button class="tab" data-tab="forecast">13-week forecast</button>
+  <button class="tab" data-tab="activity">Money in/out</button>
+  <button class="tab" data-tab="messages">Follow-up messages</button>
+</nav>
+
+<!-- OVERVIEW -->
+<section id="overview">
+  <div class="stats">
+    <div class="stat">
+      <div class="name">Starting cash</div>
+      <div class="value" id="cashStat">R 0.00</div>
+    </div>
+    <div class="stat">
+      <div class="name">Outstanding invoices</div>
+      <div class="value" id="owedStat">R 0.00</div>
+    </div>
+    <div class="stat">
+      <div class="name">Overdue invoices</div>
+      <div class="value" id="overdueStat">R 0.00</div>
+    </div>
+    <div class="stat">
+      <div class="name">Lowest forecast balance</div>
+      <div class="value" id="lowStat">R 0.00</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Starting cash position</h2>
+    <p class="muted">Enter the cash currently available in your business account or cash reserve.</p>
+    <div class="grid">
+      <div class="field">
+        <label for="opening">Starting cash amount</label>
+        <input id="opening" type="number" min="0" step="0.01" placeholder="e.g. 5000">
+      </div>
+      <div class="field">
+        <label for="asof">Forecast starting date</label>
+        <input id="asof" type="date">
+      </div>
+    </div>
+    <button id="saveOpening">Save starting position</button>
+  </div>
+
+  <div class="card">
+    <h2>Recommended actions</h2>
+    <div id="priorities"></div>
+  </div>
+
+  <div class="card">
+    <h2>How to use this kit</h2>
+    <ol>
+      <li>Enter your current available cash in Overview.</li>
+      <li>Add invoices and update them when customers pay.</li>
+      <li>Enter expected income and spending in the 13-week forecast.</li>
+      <li>Record actual money received and spent.</li>
+      <li>Use the follow-up messages to remind customers about unpaid invoices.</li>
+      <li>Export a full backup regularly to protect your records.</li>
+    </ol>
+    <div class="notice">
+      This tool helps organise your records and estimates. It does not connect to your bank, verify payments or guarantee future income.
+    </div>
+  </div>
+</section>
+
+<!-- INVOICES -->
+<section id="invoices" class="hidden">
+  <div class="card">
+    <h2>Add an invoice</h2>
+    <div class="field">
+      <label for="invName">Customer or invoice reference</label>
+      <input id="invName" type="text" placeholder="e.g. Customer A - INV001">
+    </div>
+    <div class="grid">
+      <div class="field">
+        <label for="invAmount">Original invoice amount</label>
+        <input id="invAmount" type="number" min="0.01" step="0.01" placeholder="0.00">
+      </div>
+      <div class="field">
+        <label for="invRemaining">Outstanding balance</label>
+        <input id="invRemaining" type="number" min="0" step="0.01" placeholder="Leave blank for full amount">
+      </div>
+      <div class="field">
+        <label for="invDue">Due date</label>
+        <input id="invDue" type="date">
+      </div>
+      <div class="field">
+        <label for="invStatus">Payment status</label>
+        <select id="invStatus">
+          <option value="unpaid">Unpaid</option>
+          <option value="part">Part-paid</option>
+          <option value="paid">Paid</option>
+        </select>
+      </div>
+    </div>
+    <button id="addInvoice">Add invoice</button>
+  </div>
+
+  <div class="card">
+    <h2>Invoice register</h2>
+    <p class="muted">Use Mark paid when the payment has actually cleared in your account.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Customer / reference</th>
+            <th>Due date</th>
+            <th>Original amount</th>
+            <th>Remaining</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="invoiceRows"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- FORECAST -->
+<section id="forecast" class="hidden">
+  <div class="card">
+    <h2>13-week cash-flow forecast</h2>
+    <p class="muted">Enter the money you expect to receive and the money you plan to spend in each week. The closing balance updates automatically.</p>
+    <div class="notice">
+      These are estimates, not confirmed payments. Update them when your expectations change.
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Week / date</th>
+            <th>Expected incoming</th>
+            <th>Planned outgoing</th>
+            <th>Net movement</th>
+            <th>Closing cash</th>
+          </tr>
+        </thead>
+        <tbody id="forecastRows"></tbody>
+      </table>
+    </div>
+    <hr>
+    <button id="clearForecast" class="danger">Clear forecast figures</button>
+  </div>
+</section>
+
+<!-- ACTIVITY -->
+<section id="activity" class="hidden">
+  <div class="card">
+    <h2>Record money received or spent</h2>
+    <div class="field">
+      <label for="txName">Description</label>
+      <input id="txName" type="text" placeholder="e.g. Customer payment or electricity">
+    </div>
+    <div class="grid">
+      <div class="field">
+        <label for="txAmount">Amount</label>
+        <input id="txAmount" type="number" min="0.01" step="0.01" placeholder="0.00">
+      </div>
+      <div class="field">
+        <label for="txDate">Date</label>
+        <input id="txDate" type="date">
+      </div>
+      <div class="field">
+        <label for="txType">Movement</label>
+        <select id="txType">
+          <option value="in">Money received</option>
+          <option value="out">Money spent</option>
+        </select>
+      </div>
+    </div>
+    <button id="addTx">Record movement</button>
+  </div>
+
+  <div class="card">
+    <h2>Money movement register</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Type</th>
+            <th>Amount</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="txRows"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- MESSAGES -->
+<section id="messages" class="hidden">
+  <div class="card">
+    <h2>Customer payment follow-ups</h2>
+    <p class="muted">Copy a message, replace the details and send it using your usual communication method.</p>
+
+    <div class="script">
+      <h3>1. Friendly payment reminder</h3>
+      <textarea id="message1" readonly>Hello [Customer Name],
+
+I hope you are well. This is a friendly reminder that invoice [Invoice Number] for [Amount] was due on [Due Date].
+
+Please let me know when we can expect payment.
+
+Thank you,
+[Your Name]</textarea>
+      <button class="copyButton" data-copy="message1">Copy message</button>
+    </div>
+
+    <div class="script">
+      <h3>2. Overdue payment follow-up</h3>
+      <textarea id="message2" readonly>Hello [Customer Name],
+
+Our records show that invoice [Invoice Number] for [Amount] is still outstanding and is now overdue.
+
+Could you please confirm when payment will be made? If payment has already been made, please send us the payment confirmation so that we can update our records.
+
+Kind regards,
+[Your Name]</textarea>
+      <button class="copyButton" data-copy="message2">Copy message</button>
+    </div>
+
+    <div class="script">
+      <h3>3. Request for a payment date</h3>
+      <textarea id="message3" readonly>Hello [Customer Name],
+
+We are following up regarding the outstanding balance of [Amount] on invoice [Invoice Number].
+
+Please could you confirm the expected payment date so that we can plan our accounts accordingly?
+
+Thank you for your assistance.
+
+Kind regards,
+[Your Name]</textarea>
+      <button class="copyButton" data-copy="message3">Copy message</button>
+    </div>
+
+    <div class="script">
+      <h3>4. Final polite reminder</h3>
+      <textarea id="message4" readonly>Hello [Customer Name],
+
+We have contacted you previously regarding invoice [Invoice Number], which remains unpaid.
+
+Please arrange settlement of the outstanding amount of [Amount], or contact us to discuss a suitable payment arrangement.
+
+We would appreciate your response by [Response Date].
+
+Kind regards,
+[Your Name]</textarea>
+      <button class="copyButton" data-copy="message4">Copy message</button>
+    </div>
+  </div>
+</section>
+
+<div class="footer">
+  JeanDev Studios · All rights reserved · Version 1.1 · Offline-first browser tool
+</div>
+
+</main>
+
+<script>
+'use strict';
+
+const KEY = 'jeandev_cashflow_kit_v1';
+
+function localToday() {
+  const d = new Date();
+  return d.getFullYear() + '-' +
+    String(d.getMonth()+1).padStart(2,'0') + '-' +
+    String(d.getDate()).padStart(2,'0');
+}
+
+function makeId() {
+  if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+    return window.crypto.randomUUID();
+  }
+  return 'id-' + Date.now() + '-' + Math.random().toString(16).slice(2);
+}
+
+function blankData() {
+  return {
+    currency:'ZAR',
+    opening:0,
+    asof:localToday(),
+    invoices:[],
+    transactions:[],
+    weeks:Array.from({length:13},()=>({incoming:0,outgoing:0}))
+  };
+}
+
+function normaliseData(input) {
+  const base = blankData();
+  const source = input && typeof input === 'object' ? input : {};
+
+  base.currency = ['ZAR','USD','EUR'].includes(source.currency) ? source.currency : 'ZAR';
+  base.opening = Math.max(0,Number(source.opening)||0);
+  base.asof = /^\d{4}-\d{2}-\d{2}$/.test(source.asof||'') ? source.asof : localToday();
+
+  base.invoices = Array.isArray(source.invoices)
+    ? source.invoices.map(x=>({
+        id:String(x.id || makeId()),
+        name:String(x.name || ''),
+        amount:Math.max(0,Number(x.amount)||0),
+        remaining:Math.max(0,Number(x.remaining ?? x.amount)||0),
+        due:String(x.due || ''),
+        status:['unpaid','part','paid'].includes(x.status) ? x.status : 'unpaid'
+      }))
+    : [];
+
+  base.transactions = Array.isArray(source.transactions)
+    ? source.transactions.map(x=>({
+        id:String(x.id || makeId()),
+        name:String(x.name || ''),
+        amount:Math.max(0,Number(x.amount)||0),
+        date:String(x.date || localToday()),
+        type:x.type === 'out' ? 'out' : 'in'
+      }))
+    : [];
+
+  const oldWeeks = Array.isArray(source.weeks) ? source.weeks : [];
+  base.weeks = Array.from({length:13},(_,i)=>({
+    incoming:Math.max(0,Number(oldWeeks[i]?.incoming)||0),
+    outgoing:Math.max(0,Number(oldWeeks[i]?.outgoing)||0)
+  }));
+
+  return base;
+}
+
+const $ = id => document.getElementById(id);
+const symbols = {ZAR:'R',USD:'$',EUR:'€'};
+let data = blankData();
+let storageAvailable = true;
+
+try {
+  const saved = localStorage.getItem(KEY);
+  if (saved) data = normaliseData(JSON.parse(saved));
+} catch (error) {
+  storageAvailable = false;
+}
+
+function setStorageMessage(message, warning=false) {
+  $('storageStatus').textContent = message;
+  $('storageStatus').style.background = warning ? '#fff1df' : '#e8f2fb';
+  $('storageStatus').style.color = warning ? '#87520c' : '#245477';
+}
+
+function saveData() {
+  try {
+    localStorage.setItem(KEY,JSON.stringify(data));
+    storageAvailable = true;
+    setStorageMessage('Saved in this browser on this device. Export a full backup regularly.');
+  } catch (error) {
+    storageAvailable = false;
+    setStorageMessage('Browser storage is unavailable or full. Please export a backup and keep it somewhere safe.',true);
+  }
+}
+
+function money(value) {
+  const amount = Number(value)||0;
+  return symbols[data.currency] + ' ' +
+    amount.toLocaleString(undefined,{
+      minimumFractionDigits:2,
+      maximumFractionDigits:2
+    });
+}
+
+function esc(value) {
+  return String(value ?? '').replace(/[&<>"']/g,c=>({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#39;'
+  })[c]);
+}
+
+function addDays(date,days) {
+  const parts = date.split('-').map(Number);
+  const d = new Date(parts[0],parts[1]-1,parts[2],12);
+  d.setDate(d.getDate()+days);
+  return d.getFullYear()+'-'+
+    String(d.getMonth()+1).padStart(2,'0')+'-'+
+    String(d.getDate()).padStart(2,'0');
+}
+
+function forecast() {
+  let balance = Number(data.opening)||0;
+  const rows = [];
+
+  for (let i=0;i<13;i++) {
+    const w = data.weeks[i] || {incoming:0,outgoing:0};
+    const incoming = Number(w.incoming)||0;
+    const outgoing = Number(w.outgoing)||0;
+    const net = incoming-outgoing;
+    balance += net;
+    rows.push({
+      week:i+1,
+      incoming,
+      outgoing,
+      net,
+      closing:balance
+    });
+  }
+  return rows;
+}
+
+function render() {
+  $('currency').value = data.currency;
+  $('opening').value = data.opening;
+  $('asof').value = data.asof;
+
+  const outstanding = data.invoices
+    .filter(x=>x.status!=='paid')
+    .reduce((s,x)=>s+Number(x.remaining||0),0);
+
+  const overdue = data.invoices
+    .filter(x=>x.status!=='paid' && x.due && x.due<localToday())
+    .reduce((s,x)=>s+Number(x.remaining||0),0);
+
+  const f = forecast();
+  const lowest = Math.min(Number(data.opening)||0,...f.map(x=>x.closing));
+
+  $('cashStat').textContent = money(data.opening);
+  $('owedStat').textContent = money(outstanding);
+  $('overdueStat').textContent = money(overdue);
+  $('lowStat').textContent = money(lowest);
+
+  $('invoiceRows').innerHTML = data.invoices.map(x=>{
+    const isOverdue = x.status!=='paid' && x.due && x.due<localToday();
+    const statusText = x.status==='paid' ? 'Paid' :
+      x.status==='part' ? 'Part-paid' :
+      isOverdue ? 'Overdue' : 'Unpaid';
+    const statusClass = x.status==='paid' ? 'paid' : isOverdue ? 'overdue' : '';
+
+    return `<tr>
+      <td>${esc(x.name)}</td>
+      <td>${esc(x.due)}</td>
+      <td>${money(x.amount)}</td>
+      <td>${money(x.remaining)}</td>
+      <td><span class="pill ${statusClass}">${statusText}</span></td>
+      <td><div class="actions">
+        <button class="small green" data-paid="${esc(x.id)}">Mark paid</button>
+        <button class="small danger" data-del-inv="${esc(x.id)}">Delete</button>
+      </div></td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="6" class="muted">No invoices recorded yet.</td></tr>';
+
+  $('forecastRows').innerHTML = f.map((x,i)=>`
+    <tr>
+      <td>Week ${x.week}<br><span class="muted">${addDays(data.asof,i*7)}</span></td>
+      <td><input aria-label="Week ${x.week} incoming" type="number" min="0" step="0.01" data-week="${i}" data-kind="incoming" value="${x.incoming||''}"></td>
+      <td><input aria-label="Week ${x.week} outgoing" type="number" min="0" step="0.01" data-week="${i}" data-kind="outgoing" value="${x.outgoing||''}"></td>
+      <td>${money(x.net)}</td>
+      <td><b>${money(x.closing)}</b></td>
+    </tr>
+  `).join('');
+
+  $('txRows').innerHTML = data.transactions.slice().reverse().map(x=>`
+    <tr>
+      <td>${esc(x.date)}</td>
+      <td>${esc(x.name)}</td>
+      <td>${x.type==='in'?'Received':'Spent'}</td>
+      <td>${x.type==='in'?'+':'−'}${money(x.amount)}</td>
+      <td><button class="small danger" data-del-tx="${esc(x.id)}">Delete</button></td>
+    </tr>
+  `).join('') || '<tr><td colspan="5" class="muted">No money movements recorded yet.</td></tr>';
+
+  const actions = [];
+
+  if (overdue>0) {
+    actions.push(`<p><b>Follow up:</b> You have ${money(overdue)} in overdue invoices. Review the invoice register and send an appropriate reminder.</p>`);
+  }
+
+  if (lowest<0) {
+    actions.push('<p><b>Cash warning:</b> Your forecast falls below zero. Review timing, discretionary spending and expected receipts before committing to outflows.</p>');
+  } else if (lowest<(Number(data.opening)||0)*0.25 && data.opening>0) {
+    actions.push('<p><b>Cash watch:</b> Your forecast shows a substantial reduction from your starting cash. Check the weeks with the largest outflows.</p>');
+  }
+
+  if (!actions.length) {
+    actions.push('<p>Nothing urgent is flagged by the figures entered. Keep invoice statuses and weekly estimates up to date.</p>');
+  }
+
+  $('priorities').innerHTML = actions.join('');
+  saveData();
+}
+
+// Starting cash
+$('saveOpening').addEventListener('click',()=>{
+  const opening = Number($('opening').value);
+  if (!Number.isFinite(opening) || opening<0) {
+    alert('Please enter a valid starting cash amount.');
+    return;
+  }
+  data.opening = opening;
+  data.asof = $('asof').value || localToday();
+  render();
+});
+
+$('currency').addEventListener('change',e=>{
+  data.currency = e.target.value;
+  render();
+});
+
+// Add invoice
+$('addInvoice').addEventListener('click',()=>{
+  const name = $('invName').value.trim();
+  const amount = Number($('invAmount').value);
+  const due = $('invDue').value;
+  const status = $('invStatus').value;
+  const remainingInput = $('invRemaining').value;
+  const remaining = remainingInput==='' ? amount : Number(remainingInput);
+
+  if (!name || !due || !Number.isFinite(amount) || amount<=0 ||
+      !Number.isFinite(remaining) || remaining<0 || remaining>amount) {
+    alert('Enter a reference, due date and valid amount. The remaining balance cannot exceed the original amount.');
+    return;
+  }
+
+  data.invoices.push({
+    id:makeId(),
+    name,
+    amount,
+    due,
+    status,
+    remaining:status==='paid' ? 0 : remaining
+  });
+
+  ['invName','invAmount','invDue','invRemaining'].forEach(id=>$(id).value='');
+  $('invStatus').value='unpaid';
+  render();
+});
+
+// Add transaction
+$('addTx').addEventListener('click',()=>{
+  const name = $('txName').value.trim();
+  const amount = Number($('txAmount').value);
+  const date = $('txDate').value || localToday();
+
+  if (!name || !Number.isFinite(amount) || amount<=0) {
+    alert('Enter a description and an amount greater than zero.');
+    return;
+  }
+
+  data.transactions.push({
+    id:makeId(),
+    name,
+    amount,
+    date,
+    type:$('txType').value
+  });
+
+  $('txName').value='';
+  $('txAmount').value='';
+  $('txDate').value=localToday();
+  render();
+});
+
+// Forecast editing
+$('forecastRows').addEventListener('change',e=>{
+  const i = e.target.dataset.week;
+  const kind = e.target.dataset.kind;
+  if (i===undefined || !['incoming','outgoing'].includes(kind)) return;
+
+  data.weeks[Number(i)][kind] = Math.max(0,Number(e.target.value)||0);
+  render();
+});
+
+// Invoice and transaction actions
+document.addEventListener('click',e=>{
+  const button = e.target.closest('button');
+  if (!button) return;
+
+  let id = button.dataset.paid;
+  if (id) {
+    const invoice = data.invoices.find(x=>x.id===id);
+    if (invoice) {
+      invoice.status='paid';
+      invoice.remaining=0;
+      render();
+    }
+    return;
+  }
+
+  id = button.dataset.delInv;
+  if (id) {
+    if (confirm('Delete this invoice from the register?')) {
+      data.invoices = data.invoices.filter(x=>x.id!==id);
+      render();
+    }
+    return;
+  }
+
+  id = button.dataset.delTx;
+  if (id) {
+    if (confirm('Delete this money movement?')) {
+      data.transactions = data.transactions.filter(x=>x.id!==id);
+      render();
+    }
+  }
+});
+
+// Clear forecast
+$('clearForecast').addEventListener('click',()=>{
+  if (confirm('Clear all 13-week forecast figures?')) {
+    data.weeks = blankData().weeks;
+    render();
+  }
+});
+
+// Copy messages
+async function copyMessage(id) {
+  const field = $(id);
+  if (!field) return;
+
+  const value = field.value;
+
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(value);
+      alert('Message copied. You can now paste it into your message.');
+      return;
+    }
+  } catch (error) {
+    // Try the manual browser-compatible method below.
+  }
+
+  try {
+    field.focus();
+    field.select();
+    field.setSelectionRange(0,field.value.length);
+
+    const successful = document.execCommand('copy');
+    if (successful) {
+      alert('Message copied. You can now paste it.');
+      return;
+    }
+  } catch (error) {
+    // Manual selection remains available.
+  }
+
+  field.focus();
+  field.select();
+  field.setSelectionRange(0,field.value.length);
+  alert('The message is selected. Press and hold the selected text, choose Copy, then paste it where you want to send it.');
+}
+
+document.querySelectorAll('.copyButton').forEach(button=>{
+  button.addEventListener('click',()=>{
+    copyMessage(button.dataset.copy);
+  });
+});
+
+// Download helper
+function downloadFile(filename,content,type) {
+  const blob = new Blob([content],{type});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1500);
+}
+
+// Full JSON backup
+$('backupJson').addEventListener('click',()=>{
+  const backup = {
+    format:'JeanDevCashFlowBackup',
+    version:1,
+    exportedAt:new Date().toISOString(),
+    data:data
+  };
+
+  downloadFile(
+    'jeandev-cash-flow-full-backup.json',
+    JSON.stringify(backup,null,2),
+    'application/json'
+  );
+});
+
+// CSV export
+$('exportCsv').addEventListener('click',()=>{
+  const rows = [[
+    'record_type','date_or_week','description','amount','status',
+    'original_amount','currency'
+  ]];
+
+  rows.push([
+    'starting_cash',data.asof,'Opening cash',data.opening,'','',data.currency
+  ]);
+
+  data.invoices.forEach(x=>{
+    rows.push([
+      'invoice',x.due,x.name,x.remaining,x.status,x.amount,data.currency
+    ]);
+  });
+
+  data.transactions.forEach(x=>{
+    rows.push([
+      'transaction',x.date,x.name,
+      x.type==='out' ? -x.amount : x.amount,
+      x.type,data.currency
+    ]);
+  });
+
+  data.weeks.forEach((x,i)=>{
+    rows.push(['forecast','Week '+(i+1),'Expected incoming',x.incoming,'','',data.currency]);
+    rows.push(['forecast','Week '+(i+1),'Planned outgoing',x.outgoing,'','',data.currency]);
+  });
+
+  const csv = rows.map(row=>
+    row.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')
+  ).join('\r\n');
+
+  downloadFile('cash-flow-control-backup.csv',csv,'text/csv;charset=utf-8');
+});
+
+// CSV parser, including quoted commas and quotation marks
+function parseCSV(text) {
+  const rows = [];
+  let row = [];
+  let field = '';
+  let quoted = false;
+
+  for (let i=0;i<text.length;i++) {
+    const ch = text[i];
+
+    if (quoted) {
+      if (ch==='"' && text[i+1]==='"') {
+        field+='"';
+        i++;
+      } else if (ch==='"') {
+        quoted=false;
+      } else {
+        field+=ch;
+      }
+    } else {
+      if (ch==='"') {
+        quoted=true;
+      } else if (ch===',') {
+        row.push(field);
+        field='';
+      } else if (ch==='\n') {
+        row.push(field);
+        rows.push(row);
+        row=[];
+        field='';
+      } else if (ch!=='\r') {
+        field+=ch;
+      }
+    }
+  }
+
+  if (field!=='' || row.length) {
+    row.push(field);
+    rows.push(row);
+  }
+
+  return rows;
+}
+
+function importCSV(text) {
+  const rows = parseCSV(text);
+  if (!rows.length || rows[0][0]!=='record_type') {
+    throw new Error('This does not look like a supported Cash Flow CSV backup.');
+  }
+
+  const restored = blankData();
+
+  for (const row of rows.slice(1)) {
+    const [type,date,description,amount,status,originalAmount,currency] = row;
+    const value = Number(amount)||0;
+
+    if (currency && ['ZAR','USD','EUR'].includes(currency)) {
+      restored.currency=currency;
+    }
+
+    if (type==='starting_cash') {
+      restored.opening=Math.max(0,value);
+      if (/^\d{4}-\d{2}-\d{2}$/.test(date||'')) restored.asof=date;
+    }
+
+    if (type==='invoice') {
+      const original = Number(originalAmount)>0 ? Number(originalAmount) : value;
+      restored.invoices.push({
+        id:makeId(),
+        name:description||'Imported invoice',
+        due:date||'',
+        amount:original,
+        remaining:Math.max(0,value),
+        status:['unpaid','part','paid'].includes(status) ? status : 'unpaid'
+      });
+    }
+
+    if (type==='transaction') {
+      restored.transactions.push({
+        id:makeId(),
+        name:description||'Imported transaction',
+        date:date||localToday(),
+        amount:Math.abs(value),
+        type:status==='out' || value<0 ? 'out' : 'in'
+      });
+    }
+
+    if (type==='forecast') {
+      const match = String(date||'').match(/Week\s+(\d+)/i);
+      if (match) {
+        const index=Number(match[1])-1;
+        if (index>=0 && index<13) {
+          if (description==='Expected incoming') restored.weeks[index].incoming=Math.max(0,value);
+          if (description==='Planned outgoing') restored.weeks[index].outgoing=Math.max(0,value);
+        }
+      }
+    }
+  }
+
+  return normaliseData(restored);
+}
+
+// Restore JSON or CSV backup
+$('restoreButton').addEventListener('click',()=>{
+  $('restoreFile').click();
+});
+
+$('restoreFile').addEventListener('change',async e=>{
+  const file=e.target.files && e.target.files[0];
+  if (!file) return;
+
+  try {
+    const content=await file.text();
+    let restored;
+
+    if (file.name.toLowerCase().endsWith('.csv') || content.trim().startsWith('"record_type"')) {
+      restored=importCSV(content);
+    } else {
+      const parsed=JSON.parse(content);
+      const source=parsed && parsed.data ? parsed.data : parsed;
+
+      if (!source || typeof source!=='object' ||
+          (!Array.isArray(source.invoices) && !Array.isArray(source.transactions) && !Array.isArray(source.weeks) && !('opening' in source))) {
+        throw new Error('The selected file does not contain a recognised backup.');
+      }
+
+      restored=normaliseData(source);
+    }
+
+    if (!confirm('Restore this backup? Your current information in this app will be replaced by the backup contents.')) {
+      e.target.value='';
+      return;
+    }
+
+    data=restored;
+    render();
+    alert('Backup restored successfully.');
+  } catch (error) {
+    alert('Could not restore this file: '+error.message);
+  }
+
+  e.target.value='';
+});
+
+// Tabs
+document.querySelectorAll('.tab').forEach(button=>{
+  button.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(x=>{
+      x.classList.toggle('active',x===button);
+    });
+
+    document.querySelectorAll('main section').forEach(section=>{
+      section.classList.toggle('hidden',section.id!==button.dataset.tab);
+    });
+  });
+});
+
+// Print
+$('printButton').addEventListener('click',()=>window.print());
+
+// Initial setup
+$('txDate').value=localToday();
+
+if (!storageAvailable) {
+  setStorageMessage('Could not read saved browser data. Your new entries may not be saved. Please use backups.',true);
+}
+
+render();
+</script>
+
+</body>
+</html>
