@@ -1,0 +1,21 @@
+
+{
+  "id": "/cash-flow-control-kit/",
+  "name": "Cash Flow & Late Payment Control Kit",
+  "short_name": "Cash Flow Kit",
+  "description": "JeanDev Studios practical business tool for cash flow, invoices and late payments.",
+  "start_url": "/cash-flow-control-kit/",
+  "scope": "/cash-flow-control-kit/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f3f6fa",
+  "theme_color": "#10243a",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
