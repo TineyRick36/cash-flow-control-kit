@@ -5,6 +5,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#10243a">
+ es underneath:
+<meta name="description" content="JeanDev Studios Cash Flow and Late Payment Control Kit. Track invoices, cash flow and your next 13 weeks.">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Cash Flow Kit">
+<link rel="manifest" href="/cash-flow-control-kit/manifest.webmanifest"> 
 <title>Cash Flow & Late Payment Control Kit</title>
 
 <style>
@@ -973,10 +980,10 @@ $('exportCsv').addEventListener('click',()=>{
 
   data.transactions.forEach(x=>{
     rows.push([
-      'transaction',x.date,x.name,
-      x.type==='out' ? -x.amount : x.amount,
-      x.type,data.currency
-    ]);
+  'transaction',x.date,x.name,
+  x.type==='out' ? -x.amount : x.amount,
+  x.type,'',data.currency
+]);
   });
 
   data.weeks.forEach((x,i)=>{
@@ -1159,6 +1166,14 @@ if (!storageAvailable) {
 }
 
 render();
+  // Register the service worker for offline use and installability.
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/cash-flow-control-kit/service-worker.js')
+      .then(() => console.log('Cash Flow Kit service worker registered.'))
+      .catch(error => console.error('Service worker registration failed:', error));
+  });
+}
 </script>
 
 </body>
